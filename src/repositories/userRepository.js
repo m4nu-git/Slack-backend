@@ -1,0 +1,17 @@
+import User from "../schema/user";
+
+const userRepository = {
+    ...credRepository(User),
+
+    getByEmail: async function (email) {
+        const user = await User.findOne({ email });
+        return user;
+    },
+
+    getByUsername: async function (username) {
+        const user = await User.findOne({ username });
+        return user;
+    }
+}
+
+export default userRepository;
