@@ -1,7 +1,8 @@
-import User from "../schema/user";
+import User from "../schema/user.js";
+import crudRepository from "./crudRepository.js";
 
 const userRepository = {
-    ...credRepository(User),
+    ...crudRepository(User),
 
     getByEmail: async function (email) {
         const user = await User.findOne({ email });
