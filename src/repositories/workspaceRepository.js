@@ -1,8 +1,10 @@
 import { StatusCodes } from "http-status-codes";
+
+import User from '../schema/user.js'
 import Workspace from "../schema/workspace.js";
 import ClientError from "../utils/errors/clientError.js";
+import channelRepository from "./channelRespository.js";
 import crudRepository from "./crudRepository.js";
-import channelRepository from "./channelRespository";
 
 const workspaceRepository = {
     ...crudRepository(Workspace),
@@ -56,7 +58,7 @@ const workspaceRepository = {
             })
         }
 
-        const isMemberAlreadyPartOfWorkspace = Workspace.members.find(
+        const isMemberAlreadyPartOfWorkspace = workspace.members.find(
             (member) => member.memberId == memberId
         );
 
