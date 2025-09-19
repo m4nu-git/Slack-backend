@@ -1,13 +1,14 @@
+import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
-import workspaceRepository from '../repositories/workspaceRepository.js';
-import ValidationError from '../utils/errors/validationError.js';
-import ClientError from '../utils/errors/clientError.js';
-import { StatusCodes } from 'http-status-codes';
 import channelRepository from '../repositories/channelRespository.js';
+import userRepository from '../repositories/userRepository.js';
+import workspaceRepository from '../repositories/workspaceRepository.js';
+import ClientError from '../utils/errors/clientError.js';
+import ValidationError from '../utils/errors/validationError.js';
 
 const isUserAdminOfWorkspace = (workspace, userId) => {
-    console.log(workspace.members, userId);
+
 
     const response = workspace.members.find(
         (member) => 
@@ -15,11 +16,11 @@ const isUserAdminOfWorkspace = (workspace, userId) => {
                 member.memberId._id.toString() === userId) && 
             member.role === 'admin'
         );
-        console.log(response);
+
         return response;
 }
 
-const isUserMemberOfWorkspace = (workspace, userId) => {
+export const isUserMemberOfWorkspace = (workspace, userId) => {
     return workspace.members.find(
         (member) => member.memberId.toString() === userId
     );
@@ -27,7 +28,7 @@ const isUserMemberOfWorkspace = (workspace, userId) => {
 
 const isChannelAlreadyPartOfWorkspace = (workspace, channelName) => {
     return workspace.channels.find(
-        (channel) => channel.name.lowerCase() === channelName.toLowerCase()
+        (channel) => channel.name.toLowerCase() === channelName.toLowerCase()
     )
 };
 
@@ -55,7 +56,7 @@ export const createWorkspaceService = async (workspaceData) => {
 
         return updatedWorkspace;
     } catch (error) {
-        console.log('Create workspace service error', error);
+
          if (error.name === 'ValidationError') {
             throw new ValidationError(
                 {
@@ -269,7 +270,7 @@ export const addChannelToWorkspaceService = async (
         statusCode: StatusCodes.NOT_FOUND
       });
     }
-    console.log('addChannelToWorkspaceService', workspace, userId);
+
     const isAdmin = isUserAdminOfWorkspace(workspace, userId);
     if (!isAdmin) {
       throw new ClientError({
